@@ -9,21 +9,21 @@ export class Utils {
 
   /**
    * Name of the service, used in Redis heartbeat updates.
-   * @private
+   * @public
    * @type { string }
    */
   public static service_name: string;
 
   /**
    * Instance of the Logger class.
-   * @private
+   * @public
    * @type { ILogger }
    */
   public static logger: ILogger;
 
   /**
    * PostgreSQL client class instance.
-   * @private
+   * @public
    * @type { IDatabase }
    */
   public static dbconn: IDatabase;
@@ -31,7 +31,7 @@ export class Utils {
   /**
    * Instance of the MQ Producer used for message publishing
    * sections of the code.
-   * @private
+   * @public
    * @type { IMessageQueuePub }
    */
   public static mq_producer: IMessageQueuePub;
@@ -39,7 +39,7 @@ export class Utils {
   /***
    * Regex used to try and extract image from item text.
    * Used when image is not provided explicitly for the feed item.
-   * @private
+   * @public
    * @type { RegExp }
    */
   public static readonly image_extraction_regex: RegExp = /<img src=["\']([^"\']+)["\'][^>]*/gm;
@@ -47,7 +47,7 @@ export class Utils {
   /**
    * Max words to keep when generating an excerpt (summary) from RSS items
    * that do not have it set.
-   * @private
+   * @public
    * @type { number }
    */
   public static readonly max_summary_words: number = 150;
@@ -55,7 +55,7 @@ export class Utils {
   /**
    * Temporary cached feed urls to IDs.
    *
-   * @private
+   * @public
    * @type { Object }
    */
   private feed_url_to_id: Object = {};
@@ -64,7 +64,7 @@ export class Utils {
    * Retrieves first image from the HTML string given.
    *
    * @param { string } html The HTML markup from which we want to extract the image.
-   * @private
+   * @public
    * @return { string } Returns URL for the first image in the given HTML markup
    *                    or an empty string if no image was found.
    */
@@ -100,7 +100,7 @@ export class Utils {
    *
    * @param { Object } link_data The link data to publish.
    * @param { string } trace_id  Trace ID for this link message received from MQ.
-   * @private
+   * @public
    */
   public static async publish_new_link_data( link_data: Object, trace_id: string ): Promise<void> {
     // add service name to the link data message
@@ -115,7 +115,7 @@ export class Utils {
    * Extracts and returns extension of a file or emty string if none was found.
    * @see https://stackoverflow.com/a/12900504/467164
    * @param fname
-   * @private
+   * @public
    */
   public static get_file_extension( fname: string ): string {
     return fname.slice( ( Math.max( 0, fname.lastIndexOf( '.' ) ) || Infinity ) + 1 );
@@ -125,7 +125,7 @@ export class Utils {
    * Removes all HTML tags, extra spaces, new lines, tabs
    * and carriage-return characters from the input string.
    * @param { string }txt
-   * @private
+   * @public
    * @return { string } Returns the cleared up string without tags and special characters.
    */
   public static untagize( txt: string ): string {
@@ -140,7 +140,7 @@ export class Utils {
    * Converts new lines into <br> tags.
    * @param { string }  str      The string in which we want to replace new lines.
    * @param { boolean } is_xhtml Determines which BR tags - HTML or XHTML ones - we'll use as a replacement.
-   * @private
+   * @public
    */
   public static nl2br (str: string, is_xhtml: boolean): string {
     // http://kevin.vanzonneveld.net
@@ -184,12 +184,12 @@ export class Utils {
    * of feed inactivity.
    *
    * @param { string } feed_url The feed URL to check for ID mapping existance.
-   * @private
+   * @public
    *
    * @return { Promise<boolean> } Returns true if the feed was successfully cached,
    *                              false otherwise.
    */
-  private async checkAndCacheFeedURL( feed_url: string ): Promise<boolean> {
+  public async checkAndCacheFeedURL( feed_url: string ): Promise<boolean> {
     let ret: boolean = true;
 
     if ( !this.feed_url_to_id[ feed_url ] ) {
