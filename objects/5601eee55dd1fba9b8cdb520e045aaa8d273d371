@@ -1,0 +1,7 @@
+[map "7e6a58ff-d447-3003-bc1b-bc3bd719bdca"]
+	object = 119dde7892060c6caf9dde7995ab14c2226bb452
+	type = include + expand tree
+[map "8c2d68d9-f384-38a8-a282-04014421b283"]
+	object = 94e33b6d91813291a1f997c1bd94b74ea51301fc
+	path = MQ
+	type = expand module
