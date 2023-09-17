@@ -1,0 +1,24 @@
+[map "7d94f4b1-8e23-38df-aea3-05bdb9c07a68"]
+	object = f296fe312d25f68be4249fe4b753693bf304c449
+	path = Database
+	stage = sync
+	type = extract module
+[module "f8c892a0-6812-38ee-94c2-edd98ec6c452"]
+	conflict = request-pull
+	path = Database
+	pull = merge rebase
+	pull = squash once
+	ref = if refs/heads/main sync refs/heads/main
+	url = agnostic://gh/687097431
+[module "0a8f8fe0-1f14-3c79-81ec-b13f55cbb586"]
+	conflict = request-pull
+	path = MQ
+	pull = merge rebase
+	pull = squash once
+	ref = if refs/heads/main sync refs/heads/main
+	url = agnostic://gh/685489380
+[map "8380dfb9-7632-3f2c-9f99-0bc95aab934a"]
+	object = f8487b4edd8cead61f2facccb52e27ae305eef44
+	path = MQ
+	stage = sync
+	type = extract module
