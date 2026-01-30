@@ -33,6 +33,7 @@ jobs:
             --exclude '.idea' \
             --exclude '.git' \
             --exclude '.github' \
+            --include '*/' \
             --include 'IRagSearch.ts' \
             --include 'IRagSearch.js' \
             --exclude '*' \
