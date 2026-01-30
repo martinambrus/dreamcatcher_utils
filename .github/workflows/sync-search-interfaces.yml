@@ -1,0 +1,51 @@
+name: Sync Search Interfaces from dreamcatcher-interfaces
+
+on:
+  repository_dispatch:
+    types: [sync-search-interfaces]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dreamcatcher_utils
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout dreamcatcher-interfaces
+        uses: actions/checkout@v4
+        with:
+          repository: martinambrus/dreamcatcher-interfaces
+          path: dreamcatcher-interfaces
+
+      - name: Sync IRagSearch interfaces
+        run: |
+          set -euo pipefail
+          SRC=dreamcatcher-interfaces
+          TARGET="Search/Interfaces"
+          mkdir -p "$TARGET"
+          rsync -a --delete \
+            --exclude '.idea' \
+            --exclude '.git' \
+            --exclude '.github' \
+            --include 'IRagSearch.ts' \
+            --include 'IRagSearch.js' \
+            --exclude '*' \
+            "$SRC/" "$TARGET/"
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Search/Interfaces
+          git commit -m "Sync search interfaces from dreamcatcher-interfaces"
+          git push
