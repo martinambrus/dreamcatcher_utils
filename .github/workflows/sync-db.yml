@@ -45,3 +45,11 @@ jobs:
           git add Database
           git commit -m "Sync Database from dreamcatcher-db"
           git push
+
+      - name: Dispatch downstream syncs (DreamCatcher)
+        if: ${{ success() }}
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.SYNC_REPOS_TOKEN }}
+          repository: martinambrus/DreamCatcher
+          event-type: sync-utils
