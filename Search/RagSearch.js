@@ -29,9 +29,9 @@ export class RagSearch {
         for (const q of queries) {
             // Sparse search (tsvector)
             const sparseRows = await this.prisma.$queryRawUnsafe(`SELECT id, parent_id, source_path, content,
-                ts_rank_cd(content_tsv, plainto_tsquery($1, $2)) AS sparse_score
+                ts_rank_cd(content_tsv, plainto_tsquery($1::regconfig, $2)) AS sparse_score
          FROM rag_chunks
-         WHERE content_tsv @@ plainto_tsquery($1, $2)
+         WHERE content_tsv @@ plainto_tsquery($1::regconfig, $2)
          ORDER BY sparse_score DESC
          LIMIT $3`, language, q, topK);
             // Dense search (pgvector) if embedder is provided

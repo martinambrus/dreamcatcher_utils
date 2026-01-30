@@ -7,6 +7,12 @@ export class RagSearch implements IRagSearch {
   private expander?: (query: string) => Promise<string[]>;
   private options: RagSearchOptions;
 
+  /**
+   * Hybrid RAG search helper that merges sparse (tsvector) and dense (pgvector)
+   * results into a single ranked list.
+   *
+   * @param {RagSearchDeps} deps Dependency container (Prisma + optional embedder/expander).
+   */
   constructor({ prisma, embedder, expander, options }: RagSearchDeps) {
     this.prisma = prisma;
     this.embedder = embedder;
@@ -20,10 +26,21 @@ export class RagSearch implements IRagSearch {
     };
   }
 
+  /**
+   * Converts an embedding array to a pgvector literal representation.
+   *
+   * @param {number[]} vec Vector to serialize.
+   */
   private vectorLiteral(vec: number[]): string {
     return `[${vec.map((v) => Number(v).toFixed(6)).join(',')}]`;
   }
 
+  /**
+   * Expands a user query using an optional expander function and de-dupes
+   * the result set.
+   *
+   * @param {string} query User query.
+   */
   private async expandQueries(query: string): Promise<string[]> {
     if (!this.expander) return [query];
     const expanded = await this.expander(query);
@@ -31,6 +48,12 @@ export class RagSearch implements IRagSearch {
     return Array.from(new Set(all));
   }
 
+  /**
+   * Executes hybrid search over `rag_chunks`, merges sparse + dense results,
+   * and returns the top ranked rows.
+   *
+   * @param {string} query User query.
+   */
   public async search(query: string): Promise<RagSearchResult[]> {
     const { denseWeight, sparseWeight, topK, returnK, language } = this.options;
     const queries = await this.expandQueries(query);
