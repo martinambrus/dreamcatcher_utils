@@ -23,7 +23,7 @@ jobs:
           repository: martinambrus/dreamcatcher-interfaces
           path: dreamcatcher-interfaces
 
-      - name: Sync IRagSearch interfaces
+      - name: Sync Interfaces repository into Search/Interfaces
         run: |
           set -euo pipefail
           SRC=dreamcatcher-interfaces
@@ -33,10 +33,6 @@ jobs:
             --exclude '.idea' \
             --exclude '.git' \
             --exclude '.github' \
-            --include '*/' \
-            --include 'IRagSearch.ts' \
-            --include 'IRagSearch.js' \
-            --exclude '*' \
             "$SRC/" "$TARGET/"
 
       - name: Commit changes
