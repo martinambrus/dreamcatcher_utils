@@ -45,4 +45,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add Search/Interfaces
           git commit -m "Sync search interfaces from dreamcatcher-interfaces"
+          git pull --rebase
           git push

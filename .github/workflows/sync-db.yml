@@ -44,6 +44,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add Database
           git commit -m "Sync Database from dreamcatcher-db"
+          git pull --rebase
           git push
 
       - name: Dispatch downstream syncs (DreamCatcher)
